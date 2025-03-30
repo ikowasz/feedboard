@@ -19,7 +19,8 @@ final class PostController extends AbstractController
     {
         $post = $postRepository->findOneById($postId);
         return $this->render('feed/post/index.html.twig', [
-            'controller_name' => 'PostController'
+            'controller_name' => 'PostController',
+            'post' => $post,
         ]);
     }
 

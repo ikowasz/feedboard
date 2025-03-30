@@ -1,20 +1,32 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}Hello PostController!{% endblock %}
+{% block title %}Post {{post.author.username }} #{{ post. id }}{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<article id="postId_{{ post.id }}">
+    <div>
+        <a href="{{ path('app_feed_post', {'postId': post.id}) }}">
+            {% if post.band is not null %}
+                <span>({{ post.band.name }})</span>
+            {% endif %}
+            <span>{{ post.author.username }}</span>
+            <span>{{ post.createdAt|date('Y-m-d H:i:s') }}</span>
+        </a>
+    </div>
+    <span>{{ post.content }}</span>
+    {% for tag in post.getPostTags %}
+        <span class="badge badge-info">#{{ tag.name }}</span>
+    {% endfor %}
+</article>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+<section>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/var/www/html/src/Controller/Feed/PostController.php</code></li>
-        <li>Your template at <code>/var/www/html/templates/feed/post/index.html.twig</code></li>
-    </ul>
-</div>
+<p>
+    {% if post.band %}
+        <a href="{{ path('app_feed_band', {'bandId': post.band.id}) }}">Back to {{ post.band.name }} feed</a>
+    {% else %}
+        <a href="{{ path('app_feed') }}">Back to mixed feed</a>
+    {% endif %}
+</p>
+</section>
 {% endblock %}
