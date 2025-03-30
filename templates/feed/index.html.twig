@@ -21,6 +21,9 @@
 
     <h2>Create a new post</h2>
     <form action="{{ path('app_feed_post_create') }}" method="put">
+        {% if band is not null %}
+            <input type="hidden" name="band_id" value="{{ band.id }}">
+        {% endif %}
         <div>
             <label for="content">Content:</label>
             <textarea id="content" name="content" required></textarea>

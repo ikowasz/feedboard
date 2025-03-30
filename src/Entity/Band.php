@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Feed\Post;
 use App\Repository\BandRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

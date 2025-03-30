@@ -2,6 +2,7 @@
 
 namespace App\Repository\Feed;
 
+use App\Entity\Band;
 use App\Entity\Feed\Post;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -21,6 +22,17 @@ class PostRepository extends ServiceEntityRepository
     public function getRecentPosts(int $limit = self::DEFAULT_LIMIT): array
     {
         return $this->createQueryBuilder('p')
+            ->orderBy('p.created_at', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getRecentPostsForBand(Band $band, int $limit = self::DEFAULT_LIMIT): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.band = :band')
+            ->setParameter('band', $band)
             ->orderBy('p.created_at', 'DESC')
             ->setMaxResults($limit)
             ->getQuery()

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\BandRepository;
 use App\Repository\Feed\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +18,20 @@ final class FeedController extends AbstractController
         return $this->render('feed/index.html.twig', [
             'controller_name' => 'FeedController',
             'posts' => $posts,
+            'band' => null,
+        ]);
+    }
+
+    #[Route('/feed/{bandId}', name: 'app_feed_band', methods: ['GET'])]
+    public function bandFeed(PostRepository $postRepository, BandRepository $bandRepository, int $bandId): Response
+    {
+        $band = $bandRepository->findOneById($bandId);
+        $posts = $postRepository->getRecentPostsForBand($band);
+
+        return $this->render('feed/index.html.twig', [
+            'controller_name' => 'FeedController',
+            'posts' => $posts,
+            'band' => $band,
         ]);
     }
 }
