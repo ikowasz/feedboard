@@ -5,8 +5,16 @@
 {% endblock %}
 
 {% block content %}
-    {% include 'partials/navigation.html.twig' %}
+    <header>
+        {% include 'partials/navigation.html.twig' %}
+    </header>
 
-    {% block body %}{% endblock %}
+    <main>
+        {% block body %}{% endblock %}
+    </main>
+
+    <footer>
+        {% block footer %}{% endblock %}
+    </footer>
 {% endblock %}
         

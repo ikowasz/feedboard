@@ -18,7 +18,15 @@ class TagsService
     public static function getTagsFromContent(string $content): array
     {
         preg_match_all('/#(\w+)/', $content, $matches);
-        return array_unique($matches[1]);
+        $tags = array_unique($matches[1]);
+        $tags = array_map([self::class, 'simplifyTag'], $tags);
+        return $tags;
+    }
+
+    public static function simplifyTag(string $tag): string
+    {
+        $tag = iconv('UTF-8', 'ASCII//TRANSLIT', $tag);
+        return preg_replace('/[^a-zA-Z0-9_]/', '', $tag);
     }
 
     public function getOrCreateTagsFromContent(string $content): array

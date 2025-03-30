@@ -1,0 +1,12 @@
+<section>
+    <h3>Band feeds</h3>
+    <div>
+        {% for bandMembership in bandMemberships %}
+            <span>
+                <a href="{{ path('app_feed_band', {'bandId': bandMembership.band.id}) }}">
+                    {{ bandMembership.band.name }}
+                </a>
+            </span>
+        {% endfor %}
+    </div>
+</section>

@@ -1,0 +1,20 @@
+<section>
+    <h1>Feed{% if band %} of {{ band.name }}{% endif %}</h1>
+    {% for post in posts %}
+        <article id="postId_{{ post.id }}">
+            <div>
+                <a href="{{ path('app_feed_post', {'postId': post.id}) }}">
+                    {% if post.band is not null %}
+                        <span>({{ post.band.name }})</span>
+                    {% endif %}
+                    <span>{{ post.author.username }}</span>
+                    <span>{{ post.createdAt|date('Y-m-d H:i:s') }}</span>
+                </a>
+            </div>
+            <span>{{ post.content }}</span>
+            {% for tag in post.getPostTags %}
+                <span class="badge badge-info">#{{ tag.name }}</span>
+            {% endfor %}
+        </article>
+    {% endfor %}
+</section>
