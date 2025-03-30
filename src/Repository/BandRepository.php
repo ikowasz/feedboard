@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Band;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,6 +15,16 @@ class BandRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Band::class);
+    }
+
+    public function findByMember(User $member): array
+    {
+        return $this->createQueryBuilder('b')
+            ->innerJoin('b.bandMemberships', 'bm')
+            ->andWhere('bm.member = :member')
+            ->setParameter('member', $member)
+            ->getQuery()
+            ->getResult();
     }
 
     //    /**

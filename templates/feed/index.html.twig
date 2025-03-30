@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Feed{% endblock %}
+
+{% block body %}
+<div>
+    <h1>Feed</h1>
+    <ul>
+        {% for post in posts %}
+            <li>
+                <h2>{{ post.title }}</h2>
+                <p>{{ post.content }}</p>
+                <p><strong>Author:</strong> {{ post.author.name }}</p>
+                <p><strong>Date:</strong> {{ post.createdAt|date('Y-m-d H:i:s') }}</p>
+                <p>
+                    {% for tag in post.getPostTags() %}
+                        <span class="badge badge-info">{{ tag.name }}</span>
+                    {% endfor %}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Create a new post</h2>
+    <form action="{{ path('app_feed_post_create') }}" method="put">
+        <div>
+            <label for="content">Content:</label>
+            <textarea id="content" name="content" required></textarea>
+        </div>
+        <button type="submit">Create Post</button>
+</div>
+{% endblock %}
