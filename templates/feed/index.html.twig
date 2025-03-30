@@ -8,13 +8,12 @@
     <ul>
         {% for post in posts %}
             <li>
-                <h2>{{ post.title }}</h2>
                 <p>{{ post.content }}</p>
-                <p><strong>Author:</strong> {{ post.author.name }}</p>
+                <p><strong>Author:</strong> {{ post.author.username }}</p>
                 <p><strong>Date:</strong> {{ post.createdAt|date('Y-m-d H:i:s') }}</p>
                 <p>
-                    {% for tag in post.getPostTags() %}
-                        <span class="badge badge-info">{{ tag.name }}</span>
+                    {% for tag in post.getPostTags %}
+                        <span class="badge badge-info">#{{ tag.name }}</span>
                     {% endfor %}
             </li>
         {% endfor %}
