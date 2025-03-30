@@ -32,6 +32,7 @@ class PostService
     {
         $post->setAuthor($data->author);
         $post->setContent($data->content);
+        $post->setBand($data->band);
     }
 
     private function createPostTags(Post $post, array $tags): void

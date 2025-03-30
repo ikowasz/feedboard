@@ -3,6 +3,7 @@
 namespace App\Controller\Feed;
 
 use App\DTO\Feed\PostDTO;
+use App\Repository\BandRepository;
 use App\Repository\Feed\PostRepository;
 use App\Service\Feed\PostService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,7 +24,8 @@ final class PostController extends AbstractController
     }
 
     #[Route('/feed/post', name: 'app_feed_post_create', methods: ['PUT'])]
-    public function create(Request $request, PostService $postService): RedirectResponse
+    #[Route('/feed/post/{bandId}', name: 'app_feed_post_create_band', methods: ['PUT'])]
+    public function create(Request $request, PostService $postService, BandRepository $bandRepository, ?int $bandId): RedirectResponse
     {
         $user = $this->getUser();
         if (!$user) {
@@ -34,9 +36,11 @@ final class PostController extends AbstractController
         $postData = new PostDTO();
         $postData->author = $user;
         $postData->content = $request->get('content');
+        $postData->band = $bandId ? $bandRepository->getById($bandId) : null;
         $post = $postService->createPost($postData);
 
         $this->addFlash('success', 'Post created successfully.');
-        return $this->redirectToRoute('app_feed_post', ['postId' => $post->getId()]);
+        $redirect = $this->redirectToRoute('app_feed', ['_fragment' => "postId_{$post->getId()}"], 303);
+        return $redirect;
     }
 }

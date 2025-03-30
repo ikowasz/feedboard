@@ -1,0 +1,15 @@
+.flash-notice {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    margin: 10px 0;
+}
+.flash-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    margin: 10px 0;
+}
+div:target {
+    background-color: var(--pico-text-selection-color);
+}

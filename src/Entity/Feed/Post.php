@@ -2,6 +2,7 @@
 
 namespace App\Entity\Feed;
 
+use App\Entity\Band;
 use App\Entity\User;
 use App\Repository\Feed\PostRepository;
 use DateTimeImmutable;
@@ -33,6 +34,9 @@ class Post
      */
     #[ORM\OneToMany(targetEntity: PostTag::class, mappedBy: 'post', orphanRemoval: true)]
     private Collection $postTags;
+
+    #[ORM\ManyToOne]
+    private ?Band $band = null;
 
     public function __construct()
     {
@@ -107,6 +111,18 @@ class Post
                 $postTag->setPost(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getBand(): ?Band
+    {
+        return $this->band;
+    }
+
+    public function setBand(?Band $band): static
+    {
+        $this->band = $band;
 
         return $this;
     }

@@ -11,27 +11,20 @@ use Symfony\Component\Routing\Attribute\Route;
 final class FeedController extends AbstractController
 {
     #[Route('/feed', name: 'app_feed', methods: ['GET'])]
-    public function index(PostRepository $postRepository): Response
-    {
-        $posts = $postRepository->getRecentPosts();
-
-        return $this->render('feed/index.html.twig', [
-            'controller_name' => 'FeedController',
-            'posts' => $posts,
-            'band' => null,
-        ]);
-    }
-
     #[Route('/feed/{bandId}', name: 'app_feed_band', methods: ['GET'])]
-    public function bandFeed(PostRepository $postRepository, BandRepository $bandRepository, int $bandId): Response
+    public function bandFeed(PostRepository $postRepository, BandRepository $bandRepository, ?int $bandId): Response
     {
-        $band = $bandRepository->findOneById($bandId);
-        $posts = $postRepository->getRecentPostsForBand($band);
+        $band = $bandId ? $bandRepository->findOneById($bandId) : null;
+        $posts = $band ? $postRepository->getRecentPostsForBand($band) : $postRepository->getRecentPosts();
+        $createUrl = $band ?
+            $this->generateUrl('app_feed_post_create_band', ['bandId' => $band->getId()]) :
+            $this->generateUrl('app_feed_post_create');
 
         return $this->render('feed/index.html.twig', [
             'controller_name' => 'FeedController',
             'posts' => $posts,
             'band' => $band,
+            'createUrl' => $createUrl,
         ]);
     }
 }

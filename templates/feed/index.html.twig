@@ -7,20 +7,26 @@
     <h1>Feed</h1>
     <ul>
         {% for post in posts %}
-            <li>
-                <p>{{ post.content }}</p>
-                <p><strong>Author:</strong> {{ post.author.username }}</p>
-                <p><strong>Date:</strong> {{ post.createdAt|date('Y-m-d H:i:s') }}</p>
-                <p>
-                    {% for tag in post.getPostTags %}
-                        <span class="badge badge-info">#{{ tag.name }}</span>
-                    {% endfor %}
-            </li>
+            <div id="postId_{{ post.id }}">
+                <div>
+                    <a href="{{ path('app_feed_post', {'postId': post.id}) }}">
+                        {% if post.band is not null %}
+                            <span>({{ post.band.name }})</span>
+                        {% endif %}
+                        <span>{{ post.author.username }}</span>
+                        <span>{{ post.createdAt|date('Y-m-d H:i:s') }}</span>
+                    </a>
+                </div>
+                <span>{{ post.content }}</span>
+                {% for tag in post.getPostTags %}
+                    <span class="badge badge-info">#{{ tag.name }}</span>
+                {% endfor %}
+            </div>
         {% endfor %}
     </ul>
 
     <h2>Create a new post</h2>
-    <form action="{{ path('app_feed_post_create') }}" method="put">
+    <form action="{{ createUrl }}" method="put">
         {% if band is not null %}
             <input type="hidden" name="band_id" value="{{ band.id }}">
         {% endif %}

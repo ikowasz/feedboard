@@ -6,19 +6,30 @@
 
 <div>
     <!-- list of bands -->
-    <ul>
+    <div>
         {% for band in bands %}
-            <li>
-                <a href="{{ path('app_band_show', {'id': band.id}) }}">{{ band.name }}</a>
-                <form method="delete" action="{{ path('app_band_delete', {'id': band.id}) }}">
-                    <input type="submit" value="Delete">
-                </form>
-            </li>
+            <div>
+                <div class="band-name">
+                    {{ band.name }}
+                </div>
+                <ul>
+                    <li>
+                        <a href="{{ path('app_band_show', {'id': band.id}) }}">manage</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_feed_band', {'bandId': band.id}) }}">feed</a>
+                    </li>
+                </ul>
+            </div>
         {% endfor %}
-    </ul>
+    </div>
 
     <!-- create band form -->
-    <a href="{{ path('app_band_create_form') }}">Create new Band</a>
+    <h3>Create band</h3>
+    <form action="{{ path('app_band_create') }}" method="put">
+        <input type="text" name="name" placeholder="Band Name" required>
+        <input type="submit" value="Create new Band">
+    </form>
 
     <!-- join band form -->
     <h3>Join a band</h3>

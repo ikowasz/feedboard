@@ -4,11 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Band;
 use App\Entity\BandMembership;
-use App\Repository\BandMembershipRepository;
 use App\Repository\BandRepository;
+use App\Service\BandService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,6 +15,12 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class BandController extends AbstractController
 {
+    public function __construct(
+        private readonly BandService $service,
+    )
+    {
+    }
+
     #[Route('/band', name: 'app_band_create_form', methods: ['GET'])]
     public function index(): Response
     {
@@ -39,14 +44,15 @@ final class BandController extends AbstractController
         ]);
     }
 
-    #[Route('/band', name: 'app_band_create_post', methods: ['POST'])]
+    #[Route('/band', name: 'app_band_create', methods: ['PUT'])]
     public function create(Request $request, EntityManagerInterface $em): RedirectResponse
     {
         $name = $request->get('name');
         $band = new Band();
         $band->setName($name);
         $em->persist($band);
-        $em->flush();
+
+        $this->service->join($this->getUser(), $band);
 
         $this->addFlash('notice', 'Band created successfully');
         return $this->redirectToRoute('app_bands');
@@ -89,11 +95,7 @@ final class BandController extends AbstractController
             return $this->redirectToRoute('app_bands');
         }
         
-        $membership = new BandMembership();
-        $membership->setBand($band);
-        $membership->setMember($this->getUser());
-        $em->persist($membership);
-        $em->flush();
+        $this->service->join($this->getUser(), $band);
 
         $this->addFlash('notice', 'Joined band successfully');
         return $this->redirectToRoute('app_bands');
