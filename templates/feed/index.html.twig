@@ -19,9 +19,12 @@
     {% else %}
         {% include 'feed/partials/empty-listing.html.twig' %}
     {% endif %}
+
+    <hr>
+
+    {% include 'feed/partials/new-post.html.twig' %}
 </div>
 {% endblock %}
 
 {% block footer %}
-    {% include 'feed/partials/new-post.html.twig' %}
 {% endblock %}
