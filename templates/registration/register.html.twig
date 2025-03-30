@@ -12,8 +12,9 @@
         {{ form_row(registrationForm.plainPassword, {
             label: 'Password'
         }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
 
         <button type="submit" class="btn">Register</button>
     {{ form_end(registrationForm) }}
+
+    <a href="{{ path('app_login') }}" class="btn btn-lg btn-secondary">Login</a>
 {% endblock %}
