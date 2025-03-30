@@ -4,8 +4,11 @@ namespace App\Entity\Feed;
 
 use App\Repository\Feed\PostTagRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: PostTagRepository::class)]
+#[ORM\UniqueConstraint(name: 'UNIQ_FEED_POST_TAG', fields: ['post', 'tag'])]
+#[UniqueEntity(fields: ['post', 'tag'], message: 'This post-tag relationship already exists')]
 class PostTag
 {
     #[ORM\Id]

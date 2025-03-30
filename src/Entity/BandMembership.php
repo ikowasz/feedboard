@@ -5,8 +5,11 @@ namespace App\Entity;
 use App\Repository\BandMembershipRepository;
 use App\Enum\BandMembershipType;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: BandMembershipRepository::class)]
+#[ORM\UniqueConstraint(name: 'UNIQ_BAND_MEMBERSHIP', fields: ['band', 'member'])]
+#[UniqueEntity(fields: ['band', 'member'], message: 'This membership exits already')]
 class BandMembership
 {
     #[ORM\Id]

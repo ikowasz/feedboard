@@ -6,8 +6,11 @@ use App\Repository\Feed\TagRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: TagRepository::class)]
+#[ORM\UniqueConstraint(name: 'UNIQ_FEED_TAG_NAME', fields: ['name'])]
+#[UniqueEntity(fields: ['name'], message: 'There is already a tag with this name')]
 class Tag
 {
     #[ORM\Id]

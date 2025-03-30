@@ -6,8 +6,11 @@ use App\Repository\BandRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: BandRepository::class)]
+#[ORM\UniqueConstraint(name: 'UNIQ_BAND_NAME', fields: ['name'])]
+#[UniqueEntity(fields: ['name'], message: 'There is already a band with this name')]
 class Band
 {
     #[ORM\Id]
