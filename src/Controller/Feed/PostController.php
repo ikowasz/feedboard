@@ -40,7 +40,9 @@ final class PostController extends AbstractController
         $post = $postService->createPost($postData);
 
         $this->addFlash('success', 'Post created successfully.');
-        $redirect = $this->redirectToRoute('app_feed', ['_fragment' => "postId_{$post->getId()}"], 303);
+        $redirect = $postData->band ?
+            $this->redirectToRoute('app_feed_band', ['bandId' => $postData->band->getId(), '_fragment' => "postId_{$post->getId()}"], 303) :
+            $this->redirectToRoute('app_feed', ['_fragment' => "postId_{$post->getId()}"], 303);
         return $redirect;
     }
 }
