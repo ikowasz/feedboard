@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -32,6 +34,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    /**
+     * @var Collection<int, BandMembership>
+     */
+    #[ORM\OneToMany(targetEntity: BandMembership::class, mappedBy: 'member', orphanRemoval: true)]
+    private Collection $bandMemberships;
+
+    public function __construct()
+    {
+        $this->bandMemberships = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -106,5 +119,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection<int, BandMembership>
+     */
+    public function getBandMemberships(): Collection
+    {
+        return $this->bandMemberships;
+    }
+
+    public function addBandMembership(BandMembership $bandMembership): static
+    {
+        if (!$this->bandMemberships->contains($bandMembership)) {
+            $this->bandMemberships->add($bandMembership);
+            $bandMembership->setMember($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBandMembership(BandMembership $bandMembership): static
+    {
+        if ($this->bandMemberships->removeElement($bandMembership)) {
+            // set the owning side to null (unless already changed)
+            if ($bandMembership->getMember() === $this) {
+                $bandMembership->setMember(null);
+            }
+        }
+
+        return $this;
     }
 }

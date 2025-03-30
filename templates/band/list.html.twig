@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bands{% endblock %}
+
+{% block body %}
+
+<div>
+    <!-- list of bands -->
+    <ul>
+        {% for band in bands %}
+            <li>
+                <a href="{{ path('app_band_show', {'id': band.id}) }}">{{ band.name }}</a>
+                <form method="delete" action="{{ path('app_band_delete', {'id': band.id}) }}">
+                    <input type="submit" value="Delete">
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- create band form -->
+    <a href="{{ path('app_band_create_form') }}">Create new Band</a>
+
+    <!-- join band form -->
+    <h3>Join a band</h3>
+    <form action="{{ path('app_band_join') }}" method="post">
+        <input type="text" name="name" placeholder="Band Name" required>
+        <input type="submit" value="Join Band">
+    </form>
+
+</div>
+{% endblock %}

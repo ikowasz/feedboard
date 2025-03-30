@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bands{% endblock %}
+
+{% block body %}
+
+<div>
+    <span>Band ID</span>: {{ band.id }}</span>
+    <span>Name</span>: {{ band.name }}</span>
+    <form method="delete" action="{{ path('app_band_delete', {'id': band.id}) }}">
+        <input type="submit" value="Delete">
+    </form>
+</div>
+{% endblock %}
