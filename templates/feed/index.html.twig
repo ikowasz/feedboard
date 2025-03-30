@@ -6,7 +6,13 @@
 <div>
     {% if band is null %}
         {% include 'feed/partials/feeds-listing.html.twig' %}
+    {% else %}
+        <p>
+            <a href="{{ path('app_feed') }}">Back to all feeds</a>
+        </p>
     {% endif %}
+
+    <h1>{% if band %}Feed of {{ band.name }}{% else %}Mixed feed{% endif %}</h1>
 
     {% if posts is not empty %}
         {% include 'feed/partials/listing.html.twig' %}

@@ -1,13 +1,9 @@
 <section>
-    <h2>Create a new post</h2>
     <form action="{{ createUrl }}" method="put">
         {% if band is not null %}
             <input type="hidden" name="band_id" value="{{ band.id }}">
         {% endif %}
-        <div>
-            <label for="content">Content:</label>
-            <textarea id="content" name="content" required></textarea>
-        </div>
+        <textarea id="content" name="content" placeholder="Type anything" required></textarea>
         <button type="submit">Create Post</button>
     </form>
 </section>
