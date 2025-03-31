@@ -5,6 +5,7 @@ namespace App\Service\Feed;
 use App\Entity\Feed\Post;
 use App\DTO\Feed\PostDTO;
 use App\Entity\Feed\PostTag;
+use App\Helper\TagHelper;
 use Doctrine\ORM\EntityManagerInterface;
 
 class PostService
@@ -13,13 +14,15 @@ class PostService
         private readonly TagsService $tagsService,
         private readonly EntityManagerInterface $entityManager,
     )
-    { }
+    {
+    }
 
     public function createPost(PostDTO $data) 
     {
         $post = new Post();
         $this->updatePostData($post, $data);
-        $tags = $this->tagsService->getOrCreateTagsFromContent($data->content);
+        $tagNames = TagHelper::getTags($data->content);
+        $tags = $this->tagsService->getOrCreateTags($tagNames);
 
         $this->entityManager->persist($post);
         $this->createPostTags($post, $tags);

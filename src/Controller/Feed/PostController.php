@@ -3,6 +3,7 @@
 namespace App\Controller\Feed;
 
 use App\DTO\Feed\PostDTO;
+use App\Helper\PostHelper;
 use App\Repository\BandRepository;
 use App\Repository\Feed\PostRepository;
 use App\Service\Feed\PostService;
@@ -36,7 +37,7 @@ final class PostController extends AbstractController
 
         $postData = new PostDTO();
         $postData->author = $user;
-        $postData->content = $request->get('content');
+        $postData->content = PostHelper::sanitize($request->get('content'));
         $postData->band = $bandId ? $bandRepository->getById($bandId) : null;
         $post = $postService->createPost($postData);
 

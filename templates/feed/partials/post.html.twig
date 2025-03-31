@@ -1,19 +1,14 @@
 <article id="postId_{{ post.id }}">
     <header>
         <small>
-            <a href="{{ path('app_feed_post', {'postId': post.id}) }}">
-                {% if post.band is not null %}
-                    <span>({{ post.band.name }})</span>
-                {% endif %}
+            <a href="{{ path('app_feed_post', {'postId': post.id}) }}" class="secondary">
                 <span>{{ post.author.username }}</span>
                 <span>{{ post.createdAt|date('Y-m-d H:i:s') }}</span>
+                {% if post.band is not null %}
+                    <span>w {{ post.band.name }}</span>
+                {% endif %}
             </a>
         </small>
     </header>
-    <span>{{ post.content }}</span>
-    <footer>
-        {% for tag in post.getPostTags %}
-            <small>#{{ tag.name }}</small>
-        {% endfor %}
-    </footer>
+    <span>{{ post.content | link_tags | raw }}</span>
 </article>

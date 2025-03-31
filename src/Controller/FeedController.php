@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Decorator\TaggedPost;
+use App\Helper\PostHelper;
 use App\Repository\BandMembershipRepository;
 use App\Repository\BandRepository;
 use App\Repository\Feed\PostRepository;
