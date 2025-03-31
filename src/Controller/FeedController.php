@@ -20,9 +20,15 @@ final class FeedController extends AbstractController
         BandMembershipRepository $bandMembershipRepository,
     ): Response
     {
+        $user = $this->getUser();
+        if (!$user) {
+            $this->addFlash('error', 'You must be logged in to view the feed.');
+            return $this->redirectToRoute('app_login');
+        }
+
         $band = $bandId ? $bandRepository->findOneById($bandId) : null;
         $posts = $band ? $postRepository->getRecentPostsForBand($band) : $postRepository->getRecentPosts();
-        $bandMemberships = $bandMembershipRepository->getByMember($this->getUser());
+        $bandMemberships = $bandMembershipRepository->getByMember($user);
         $createUrl = $band ?
             $this->generateUrl('app_feed_post_create_band', ['bandId' => $band->getId()]) :
             $this->generateUrl('app_feed_post_create');

@@ -24,7 +24,7 @@ class Post
     private ?User $author = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, options: ['default' => 'CURRENT_TIMESTAMP'])]
-    private DateTimeImmutable $created_at;
+    private readonly DateTimeImmutable $created_at;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
@@ -38,10 +38,17 @@ class Post
     #[ORM\ManyToOne]
     private ?Band $band = null;
 
+    /**
+     * @var Collection<int, Response>
+     */
+    #[ORM\OneToMany(targetEntity: Response::class, mappedBy: 'post')]
+    private Collection $responses;
+
     public function __construct()
     {
         $this->postTags = new ArrayCollection();
         $this->created_at = new DateTimeImmutable();
+        $this->responses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -123,6 +130,36 @@ class Post
     public function setBand(?Band $band): static
     {
         $this->band = $band;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Response>
+     */
+    public function getResponses(): Collection
+    {
+        return $this->responses;
+    }
+
+    public function addResponse(Response $response): static
+    {
+        if (!$this->responses->contains($response)) {
+            $this->responses->add($response);
+            $response->setPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResponse(Response $response): static
+    {
+        if ($this->responses->removeElement($response)) {
+            // set the owning side to null (unless already changed)
+            if ($response->getPost() === $this) {
+                $response->setPost(null);
+            }
+        }
 
         return $this;
     }

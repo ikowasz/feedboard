@@ -20,7 +20,29 @@
 </article>
 
 <section>
+{% for response in post.responses %}
+    <article id="responseId_{{ response.id }}">
+        <div>
+            <a href="{{ path('app_feed_post', {'postId': response.id}) }}">
+                <span>{{ response.author.username }}</span>
+                <span>{{ response.createdAt|date('Y-m-d H:i:s') }}</span>
+            </a>
+        </div>
+        <span>{{ response.content }}</span>
+    </article>
+{% endfor %}
+</section>
 
+<section>
+<form action="{{path('app_feed_create_response', {'postId': post.id})}}" method="PUT">
+    <input type="hidden" name="post_id" value="{{ post.id }}">
+    <input type="hidden" name="type" value="text">
+    <textarea id="content" name="content" placeholder="Type anything" required></textarea>
+    <button type="submit">Add comment</button>
+</form>
+</section>
+
+<section>
 <p>
     {% if post.band %}
         <a href="{{ path('app_feed_band', {'bandId': post.band.id}) }}">Back to {{ post.band.name }} feed</a>

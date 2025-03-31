@@ -58,19 +58,19 @@ final class BandController extends AbstractController
         return $this->redirectToRoute('app_bands');
     }
 
-    #[Route('/band/{id}', name: 'app_band_delete', methods: ['DELETE'])]
-    public function delete(int $id, EntityManagerInterface $em): RedirectResponse
+    #[Route('/band/{id}/delete', name: 'app_band_delete', methods: ['DELETE'])]
+    public function delete(int $id, BandRepository $bandRepository, EntityManagerInterface $em): RedirectResponse
     {
-        $band = $em->getRepository(Band::class)->find($id);
+        $band = $bandRepository->find($id);
         if (!$band) {
             $this->addFlash('error', 'Band not found');
-            return $this->redirectToRoute('app_bands');
+            return $this->redirectToRoute('app_bands', [], 303);
         }
         $em->remove($band);
         $em->flush();
 
         $this->addFlash('notice', 'Band deleted successfully');
-        return $this->redirectToRoute('app_bands');
+        return $this->redirectToRoute('app_bands', [], 303);
     }
 
     #[Route('/band/{id}', name: 'app_band_show', methods: ['GET'])]
