@@ -1,0 +1,9 @@
+<article id="responseId_{{ response.id }}">
+    <header>
+        <small>
+            <span>{{ response.author.username }}</span>
+            <span>{{ response.createdAt|date('Y-m-d H:i:s') }}</span>
+        </small>
+    </header>
+    <span>{{ response.content }}</span>
+</article>

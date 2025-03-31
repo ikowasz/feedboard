@@ -1,0 +1,8 @@
+<section>
+    <h4>Add a response</h4>
+    <form action="{{path('app_feed_create_response', {'postId': post.id})}}" method="PUT">
+        <input type="hidden" name="type" value="text">
+        <textarea id="content" name="content" required></textarea>
+        <button type="submit">Add response</button>
+    </form>
+</section>

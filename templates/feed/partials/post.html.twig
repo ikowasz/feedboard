@@ -1,0 +1,19 @@
+<article id="postId_{{ post.id }}">
+    <header>
+        <small>
+            <a href="{{ path('app_feed_post', {'postId': post.id}) }}">
+                {% if post.band is not null %}
+                    <span>({{ post.band.name }})</span>
+                {% endif %}
+                <span>{{ post.author.username }}</span>
+                <span>{{ post.createdAt|date('Y-m-d H:i:s') }}</span>
+            </a>
+        </small>
+    </header>
+    <span>{{ post.content }}</span>
+    <footer>
+        {% for tag in post.getPostTags %}
+            <small>#{{ tag.name }}</small>
+        {% endfor %}
+    </footer>
+</article>
