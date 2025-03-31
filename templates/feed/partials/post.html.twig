@@ -1,4 +1,4 @@
-<article id="postId_{{ post.id }}">
+<article id="postId_{{ post.id }}" {{ stimulus_controller("post", {'id': post.id, 'content': post.content | raw, 'author': post.author.username, 'band': post.band ? post.band.name : null}) }}>
     <header>
         <small>
             <a href="{{ path('app_feed_post', {'postId': post.id}) }}" class="secondary">
